@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
 
 const socials = [
-  { icon: Github, href: 'https://github.com/hamp25', label: 'GitHub' },
+  { icon: Github, href: 'https://github.com/humphreygevero-dev', label: 'GitHub' },
   { icon: Linkedin, href: 'https://linkedin.com/in/humphrey-gevero', label: 'LinkedIn' },
   { icon: Mail, href: 'mailto:humphreylionelgevero@gmail.com', label: 'Email' },
 ];

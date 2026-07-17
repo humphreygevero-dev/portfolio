@@ -137,7 +137,7 @@ export const projects: Project[] = [
     description: 'A modern business website showcasing software development services with responsive design, elegant animations, and scalable architecture. Built to attract enterprise clients and communicate technical credibility.',
     techs: ['React', 'Tailwind CSS', 'Vite', 'Framer Motion'],
     liveUrl: 'https://coretekdigital.netlify.app',
-    githubUrl: 'https://github.com/hamp25',
+    githubUrl: 'https://github.com/humphreygevero-dev',
     color: '#3B82F6',
     gradient: 'from-blue-600/20 via-indigo-600/10 to-transparent',
     codeSnippet: {
@@ -160,7 +160,7 @@ export const projects: Project[] = [
     title: "LJ's Pastil Hub POS",
     description: 'A point-of-sale and kitchen order system built for a local food business — menu-based cart, GCash QR and cash payment flows, order tracking, and an admin/reports view, packaged as an installable PWA.',
     techs: ['React', 'Vite', 'Supabase', 'PWA'],
-    githubUrl: 'https://github.com/hamp25',
+    githubUrl: 'https://github.com/humphreygevero-dev',
     color: '#F97316',
     gradient: 'from-orange-600/20 via-amber-600/10 to-transparent',
     codeSnippet: {
@@ -184,7 +184,7 @@ export const projects: Project[] = [
     title: 'H&J Visuals Photography',
     description: 'A photography studio website for a husband-and-wife team specializing in events, occasions, and portrait sessions across Cagayan de Oro and Northern Mindanao — filterable gallery, service packages, testimonials, and an inquiry form.',
     techs: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    githubUrl: 'https://github.com/hamp25',
+    githubUrl: 'https://github.com/humphreygevero-dev',
     color: '#A8823C',
     gradient: 'from-amber-700/20 via-yellow-600/10 to-transparent',
     codeSnippet: {

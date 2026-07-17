@@ -32,7 +32,7 @@ const contactCards = [
     icon: Github,
     label: 'GitHub',
     value: 'github.com/hamp25',
-    href: 'https://github.com/hamp25',
+    href: 'https://github.com/humphreygevero-dev',
     color: '#A855F7',
   },
   {
