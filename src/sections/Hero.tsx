@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, MapPin, Globe, Briefcase, Plane } from 'lucide-react';
-import { fadeUp, staggerContainer, viewportConfig } from '../utils/animations';
+import { fadeUp, staggerContainer } from '../utils/animations';
 import TypingSQL from '../components/TypingSQL';
 
 const techIcons = ['⚛️', '🐍', '📊', '⚡', '🗄️', '🎯', '🔷', '📐'];
