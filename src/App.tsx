@@ -1,7 +1,6 @@
 import Background from './components/Background';
 import ScrollProgress from './components/ScrollProgress';
 import LoadingScreen from './components/LoadingScreen';
-import CursorTrail from './components/CursorTrail';
 import ChatWidget from './components/ChatWidget';
 import Navbar from './components/Navbar';
 import SectionDivider from './components/SectionDivider';
@@ -22,7 +21,6 @@ export default function App() {
       <LoadingScreen />
       <ScrollProgress />
       <Background />
-      <CursorTrail />
       <ChatWidget />
 
       <div className="relative z-10">

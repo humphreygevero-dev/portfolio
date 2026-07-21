@@ -8,21 +8,98 @@ interface Message {
   content: string;
 }
 
-const SYSTEM_PROMPT = `You are Humphrey's AI assistant on his personal portfolio website. You represent Humphrey Lionel Gevero — a Data Analyst, Software Developer, Project Manager, and Founder & CEO of CoreTek Digital Solutions based in the Philippines.
+// ─── FAQ knowledge base ────────────────────────────────────────────────────
+const FAQ: { keywords: string[]; answer: string }[] = [
+  {
+    keywords: ['service', 'offer', 'do', 'provide', 'help', 'can you'],
+    answer: "Humphrey offers **Software Development** (React, Next.js, Laravel, Node.js), **Data Analytics** (Power BI, Tableau, SQL dashboards), and **Project Management** (Agile/Scrum, Jira, ClickUp). He also provides freelance consulting and startup collaboration. Want to book a session? Use the Contact section below! 🚀",
+  },
+  {
+    keywords: ['hire', 'available', 'availability', 'open', 'work', 'job', 'opportunity', 'freelance'],
+    answer: "Yes! Humphrey is currently **open to opportunities** including full-time roles, freelance projects, and startup collaborations. He's based in the Philippines and open to remote work, US opportunities, Japan opportunities, and relocation. Reach out via the Contact section or email humphreylionelgevero@gmail.com 📩",
+  },
+  {
+    keywords: ['tech', 'stack', 'technology', 'skill', 'language', 'framework', 'tool', 'use', 'know'],
+    answer: "Humphrey's tech stack includes:\n\n**Frontend:** React, Next.js, TypeScript, Tailwind CSS, Framer Motion\n**Backend:** Node.js, Laravel, PHP, REST APIs\n**Database:** PostgreSQL, SQL\n**Data:** Power BI, Tableau, Excel, DAX\n**Tools:** Git, Jira, ClickUp, Figma, Postman\n**Languages:** JavaScript, TypeScript, Python, PHP",
+  },
+  {
+    keywords: ['contact', 'reach', 'email', 'message', 'get in touch', 'talk'],
+    answer: "You can reach Humphrey at **humphreylionelgevero@gmail.com** or use the Contact section at the bottom of this page. He typically responds within 24 hours. You can also connect on LinkedIn or check his GitHub at github.com/hamp25 👋",
+  },
+  {
+    keywords: ['experience', 'year', 'background', 'career', 'history', 'work'],
+    answer: "Humphrey has **3+ years of experience** across:\n\n• **Founder & CEO** — CoreTek Digital Solutions (2023–Present)\n• **Project Manager** — Mabizza IT Solutions (2023–Present)\n• **Customer Support Associate** — Dice205 Digital Corporation (2021–2022)\n\nHe combines software engineering, data analytics, and project leadership in everything he does.",
+  },
+  {
+    keywords: ['project', 'portfolio', 'built', 'made', 'created', 'example', 'work'],
+    answer: "Here are some of Humphrey's featured projects:\n\n🔵 **CoreTek Digital Solutions** — Business website with React, Tailwind, Vite (live at coretekdigital.netlify.app)\n🟣 **SaaS Ordering System** — Multi-role ordering & inventory platform with Laravel + PostgreSQL\n📊 **Data Analytics Dashboard** — Executive Power BI dashboards with KPIs and reports\n\nCheck out the Projects section above for full details!",
+  },
+  {
+    keywords: ['price', 'cost', 'rate', 'charge', 'budget', 'how much'],
+    answer: "Humphrey's rates vary depending on the scope and type of project. For an accurate quote, it's best to reach out directly at **humphreylionelgevero@gmail.com** or through the Contact section. He'll get back to you within 24 hours with a tailored proposal! 💼",
+  },
+  {
+    keywords: ['coretek', 'company', 'ceo', 'founder', 'startup'],
+    answer: "**CoreTek Digital Solutions** is Humphrey's software company where he serves as Founder & CEO. The company delivers modern web applications, data analytics solutions, and digital products for clients. You can visit the company website at coretekdigital.netlify.app 🏢",
+  },
+  {
+    keywords: ['location', 'based', 'country', 'philippines', 'remote', 'timezone'],
+    answer: "Humphrey is based in the **Philippines** (Philippine Standard Time, UTC+8). He's fully set up for remote work and open to opportunities in the US, Japan, and worldwide. He's also available for relocation. 🇵🇭",
+  },
+  {
+    keywords: ['data', 'analytics', 'power bi', 'tableau', 'dashboard', 'visualization'],
+    answer: "Data analytics is one of Humphrey's core specialties! He builds interactive dashboards in **Power BI** and **Tableau**, writes complex **SQL** queries, works with Excel, and transforms raw business data into actionable executive insights. His dashboards are used for real-time KPI tracking and business decision-making. 📊",
+  },
+  {
+    keywords: ['hello', 'hi', 'hey', 'good', 'morning', 'afternoon', 'evening', 'sup', 'wassup'],
+    answer: "Hey there! 👋 I'm Humphrey's AI assistant. I can tell you all about his skills, experience, services, and how to get in touch. What would you like to know?",
+  },
+  {
+    keywords: ['thank', 'thanks', 'appreciate', 'great', 'awesome', 'nice', 'good job'],
+    answer: "You're welcome! 😊 If you have any more questions about Humphrey or want to discuss a project, feel free to ask — or head to the Contact section to reach out directly!",
+  },
+];
 
-Answer questions about Humphrey warmly and professionally. Key facts:
-- 3+ years of experience in software development, data analytics, and project management
-- Founder & CEO of CoreTek Digital Solutions
-- Project Manager at Mabizza IT Solutions
-- Previously Customer Support Associate at Dice205 Digital Corporation
-- Skills: React, TypeScript, Python, PHP, Next.js, Node.js, Laravel, PostgreSQL, Power BI, Tableau, Tailwind CSS, Framer Motion, Git, Jira, ClickUp, Figma
-- Open to remote work, US opportunities, Japan opportunities, and relocation
-- Available for freelance, full-time, and startup collaborations
-- Email: humphreylionelgevero@gmail.com
-- GitHub: github.com/hamp25
-- Company website: coretekdigital.netlify.app
+function getSmartReply(userInput: string): string {
+  const input = userInput.toLowerCase();
 
-Help visitors learn about Humphrey's work, services, and how to get in touch. If asked about booking or contact, encourage them to use the Contact section or email directly. Keep responses concise, friendly, and professional. If asked something you don't know, say you'll have Humphrey follow up personally.`;
+  // Score each FAQ by how many keywords match
+  let bestMatch = { score: 0, answer: '' };
+
+  for (const faq of FAQ) {
+    const score = faq.keywords.filter((kw) => input.includes(kw)).length;
+    if (score > bestMatch.score) {
+      bestMatch = { score, answer: faq.answer };
+    }
+  }
+
+  if (bestMatch.score >= 1) return bestMatch.answer;
+
+  // Fallback
+  return "That's a great question! I may not have the exact answer, but you can reach Humphrey directly at **humphreylionelgevero@gmail.com** — he'll personally respond within 24 hours. Alternatively, scroll down to the Contact section to send him a message! 😊";
+}
+
+// Simple markdown bold renderer
+function renderMarkdown(text: string) {
+  const parts = text.split(/\*\*(.*?)\*\*/g);
+  return parts.map((part, i) =>
+    i % 2 === 1
+      ? <strong key={i} className="text-white font-semibold">{part}</strong>
+      : <span key={i}>{part}</span>
+  );
+}
+
+function MessageBubble({ content }: { content: string }) {
+  return (
+    <div className="leading-relaxed">
+      {content.split('\n').map((line, i) => (
+        <div key={i} className={line === '' ? 'mt-2' : ''}>
+          {renderMarkdown(line)}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 const QUICK_REPLIES = [
   "What services does Humphrey offer?",
@@ -31,32 +108,13 @@ const QUICK_REPLIES = [
   "How can I contact him?",
 ];
 
-async function sendMessage(messages: { role: string; content: string }[]): Promise<string> {
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages,
-      }),
-    });
-    const data = await response.json();
-    return data.content?.[0]?.text ?? "I'm having trouble connecting right now. Please reach out to Humphrey directly at humphreylionelgevero@gmail.com!";
-  } catch {
-    return "I'm offline right now. Please contact Humphrey directly at humphreylionelgevero@gmail.com or use the Contact section below!";
-  }
-}
-
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '0',
       role: 'assistant',
-      content: "👋 Hi! I'm Humphrey's AI assistant. I can answer questions about his skills, experience, availability, and services. How can I help you today?",
+      content: "👋 Hi! I'm Humphrey's AI assistant. Ask me anything about his skills, experience, services, or availability!",
     },
   ]);
   const [input, setInput] = useState('');
@@ -85,17 +143,20 @@ export default function ChatWidget() {
     setMessages((m) => [...m, userMsg]);
     setLoading(true);
 
-    const history = [...messages, userMsg].map((m) => ({ role: m.role, content: m.content }));
-    const reply = await sendMessage(history);
+    // Simulate natural typing delay (600–1200ms)
+    const delay = 600 + Math.random() * 600;
+    await new Promise((r) => setTimeout(r, delay));
 
+    const reply = getSmartReply(content);
     setMessages((m) => [...m, { id: Date.now().toString() + '1', role: 'assistant', content: reply }]);
     setLoading(false);
-    if (!open) setUnread((n) => n + 1);
   };
+
+  const showQuickReplies = messages.length <= 1;
 
   return (
     <>
-      {/* Chat bubble button */}
+      {/* Floating button */}
       <motion.button
         onClick={() => setOpen((o) => !o)}
         className="fixed bottom-6 right-6 z-[999] w-14 h-14 rounded-full bg-primary shadow-2xl shadow-primary/40 flex items-center justify-center text-white hover:bg-primary-light transition-colors"
@@ -116,7 +177,6 @@ export default function ChatWidget() {
             </motion.div>
           )}
         </AnimatePresence>
-        {/* Unread badge */}
         {unread > 0 && !open && (
           <motion.div
             initial={{ scale: 0 }}
@@ -148,7 +208,7 @@ export default function ChatWidget() {
                 <div className="text-white font-semibold text-sm">Humphrey's Assistant</div>
                 <div className="flex items-center gap-1.5 text-white/60 text-xs">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Online · Powered by Claude AI
+                  Online · Ask me anything
                 </div>
               </div>
               <button onClick={() => setOpen(false)} className="text-white/50 hover:text-white transition-colors">
@@ -168,36 +228,31 @@ export default function ChatWidget() {
                   animate={{ opacity: 1, y: 0 }}
                   className={`flex gap-2.5 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
                 >
-                  {/* Avatar */}
                   <div
                     className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                      msg.role === 'assistant'
-                        ? 'bg-primary/20 text-primary'
-                        : 'bg-white/10 text-white/70'
+                      msg.role === 'assistant' ? 'bg-primary/20 text-primary' : 'bg-white/10 text-white/70'
                     }`}
                   >
                     {msg.role === 'assistant' ? <Bot size={14} /> : <User size={14} />}
                   </div>
-                  {/* Bubble */}
                   <div
-                    className={`max-w-[78%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                    className={`max-w-[78%] px-3.5 py-2.5 rounded-2xl text-sm ${
                       msg.role === 'assistant'
                         ? 'bg-white/6 text-white/80 rounded-tl-sm border border-white/6'
                         : 'bg-primary text-white rounded-tr-sm shadow-lg shadow-primary/20'
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === 'assistant'
+                      ? <MessageBubble content={msg.content} />
+                      : msg.content
+                    }
                   </div>
                 </motion.div>
               ))}
 
               {/* Typing indicator */}
               {loading && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex gap-2.5"
-                >
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2.5">
                   <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
                     <Bot size={14} />
                   </div>
@@ -217,7 +272,7 @@ export default function ChatWidget() {
             </div>
 
             {/* Quick replies */}
-            {messages.length <= 1 && (
+            {showQuickReplies && (
               <div className="px-3 py-2 bg-[#0d0d10] flex flex-wrap gap-1.5 border-t border-white/4">
                 {QUICK_REPLIES.map((q) => (
                   <button
