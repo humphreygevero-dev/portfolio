@@ -80,7 +80,7 @@ export default function Projects() {
           viewport={viewportConfig}
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <TiltCard key={project.title} project={project}>
               {/* Thumbnail */}
               <div className={`relative h-44 bg-gradient-to-br ${project.gradient} overflow-hidden`}>
