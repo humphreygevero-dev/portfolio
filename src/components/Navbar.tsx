@@ -18,7 +18,6 @@ export default function Navbar() {
   const [scrolled, setScrolled]     = useState(false);
   const ids = NAV.map(n => n.href.replace('#',''));
   const active = useActiveSection(ids);
-  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 50);
