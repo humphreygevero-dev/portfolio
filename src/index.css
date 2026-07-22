@@ -3,9 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-  * { box-sizing: border-box; }
-  
-  html {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -15,40 +17,46 @@
     background-color: #09090B;
     color: #fff;
     font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
-    overflow-x: hidden;
+    position: relative;
   }
 
-  ::selection {
-    background: rgba(59, 130, 246, 0.3);
-    color: #fff;
-  }
-
-  ::-webkit-scrollbar { width: 4px; }
+  ::selection { background: rgba(59,130,246,0.3); color:#fff; }
+  ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: #09090B; }
-  ::-webkit-scrollbar-thumb { background: #3B82F6; border-radius: 2px; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(#3B82F6,#A855F7); border-radius: 2px; }
 }
 
 @layer components {
+  /* ── Liquid glass ── */
   .glass {
-    background: rgba(17, 17, 19, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.08);
   }
 
-  .glass-hover {
-    transition: all 0.3s ease;
+  .liquid-glass {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(32px) saturate(200%) brightness(1.1);
+    -webkit-backdrop-filter: blur(32px) saturate(200%) brightness(1.1);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.1);
   }
 
+  .liquid-glass-active {
+    background: rgba(59,130,246,0.12);
+    backdrop-filter: blur(32px) saturate(200%) brightness(1.15);
+    -webkit-backdrop-filter: blur(32px) saturate(200%) brightness(1.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    box-shadow: 0 8px 32px rgba(59,130,246,0.15), inset 0 1px 0 rgba(255,255,255,0.15), 0 0 20px rgba(59,130,246,0.1);
+  }
+
+  .glass-hover { transition: all 0.25s ease; }
   .glass-hover:hover {
-    background: rgba(17, 17, 19, 0.85);
-    border-color: rgba(59,130,246,0.25);
-    box-shadow: 0 0 30px rgba(59,130,246,0.08), 0 20px 60px rgba(0,0,0,0.4);
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(59,130,246,0.2);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 20px rgba(59,130,246,0.06);
     transform: translateY(-2px);
-  }
-
-  .glow-text {
-    text-shadow: 0 0 40px rgba(59,130,246,0.4);
   }
 
   .gradient-text {
@@ -59,69 +67,71 @@
   }
 
   .section-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #3B82F6;
-  }
-
-  .blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    pointer-events: none;
-    will-change: transform;
   }
 }
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
-  .animation-delay-1000 { animation-delay: 1000ms; }
-  .animation-delay-2000 { animation-delay: 2000ms; }
-  .animation-delay-3000 { animation-delay: 3000ms; }
-  .animation-delay-4000 { animation-delay: 4000ms; }
-  .animation-delay-5000 { animation-delay: 5000ms; }
-  .animation-delay-6000 { animation-delay: 6000ms; }
-  .animation-delay-7000 { animation-delay: 7000ms; }
+  .no-overflow { overflow: hidden; max-width: 100%; }
 }
 
-/* Scroll progress bar */
+/* Scroll progress */
 #scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
+  position: fixed; top: 0; left: 0; height: 2px; right: 0;
   background: linear-gradient(90deg, #3B82F6, #A855F7, #22D3EE);
-  z-index: 9999;
-  transform-origin: left;
+  z-index: 9999; transform-origin: left;
 }
 
-/* Grain overlay */
+/* Grain texture */
 .grain-overlay {
-  position: fixed;
-  inset: -200%;
-  width: 400%;
-  height: 400%;
+  position: fixed; inset: -200%; width: 400%; height: 400%;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0.022;
-  pointer-events: none;
-  z-index: 1;
-  animation: grain 8s steps(10) infinite;
+  opacity: 0.02; pointer-events: none; z-index: 1; animation: grain 8s steps(10) infinite;
 }
 
 @keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-2%, -3%); }
-  20% { transform: translate(3%, 2%); }
-  30% { transform: translate(-1%, 4%); }
-  40% { transform: translate(2%, -2%); }
-  50% { transform: translate(-3%, 1%); }
-  60% { transform: translate(1%, 3%); }
-  70% { transform: translate(-2%, -1%); }
-  80% { transform: translate(3%, -3%); }
-  90% { transform: translate(-1%, 2%); }
+  0%,100%{transform:translate(0,0)}10%{transform:translate(-2%,-3%)}
+  20%{transform:translate(3%,2%)}30%{transform:translate(-1%,4%)}
+  40%{transform:translate(2%,-2%)}50%{transform:translate(-3%,1%)}
+  60%{transform:translate(1%,3%)}70%{transform:translate(-2%,-1%)}
+  80%{transform:translate(3%,-3%)}90%{transform:translate(-1%,2%)}
 }
+
+/* Liquid glass shimmer animation */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.shimmer-border {
+  position: relative;
+}
+.shimmer-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Line clamp */
+.line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+/* Tap highlight */
+button, a { -webkit-tap-highlight-color: transparent; }
+
+/* Mobile safe padding */
+.safe-bottom { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
