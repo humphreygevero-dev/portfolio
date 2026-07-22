@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Mail, Download, ArrowRight } from 'lucide-react';
 import { useActiveSection } from '../hooks/useActiveSection';
 
